@@ -92,7 +92,7 @@ func (n *ImportSpec) post(lx *lexer) {
 	default:
 		panic("internal error")
 	}
-	lx.imports = append(lx.imports, newImportDeclaration(lx.pkg, nm, pos, lx.oncePackage(bl, ip, lx.pkg.Directory))) // Async load.
+	lx.imports = append(lx.imports, newImportDeclaration(lx.pkg, nm, pos, lx.oncePackage(bl, ip))) // Async load.
 }
 
 // -------------------------------------------------------------- PackageClause

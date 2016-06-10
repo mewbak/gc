@@ -174,13 +174,8 @@ func (c *Context) clearErrors() {
 }
 
 // DirectoryFromImportPath returns the directory where the source files of
-// package importPath are to be searched for. Relative import paths are
-// computed relative to basePath.
-func (c *Context) DirectoryFromImportPath(importPath, basePath string) (string, error) {
-	if isRelativeImportPath(importPath) {
-		return filepath.Join(basePath, importPath), nil
-	}
-
+// package importPath are to be searched for.
+func (c *Context) DirectoryFromImportPath(importPath string) (string, error) {
 	for _, v := range c.searchPaths {
 		dir := filepath.Join(v, importPath)
 		fi, err := os.Stat(dir)
@@ -209,14 +204,13 @@ func (c *Context) DirectoryFromImportPath(importPath, basePath string) (string, 
 
 // FilesFromImportPath returns the directory where the source files for package
 // importPath are; a list of normal and testing (*_test.go) go source files or
-// an error, if any. A relative import path is considered to be relative to
-// basePath.
-func (c *Context) FilesFromImportPath(importPath, basePath string) (dir string, sourceFiles []string, testFiles []string, err error) {
+// an error, if any.
+func (c *Context) FilesFromImportPath(importPath string) (dir string, sourceFiles []string, testFiles []string, err error) {
 	if importPath == "C" {
 		return "", nil, nil, nil
 	}
 
-	if dir, err = c.DirectoryFromImportPath(importPath, basePath); err != nil {
+	if dir, err = c.DirectoryFromImportPath(importPath); err != nil {
 		return "", nil, nil, err
 	}
 
@@ -269,7 +263,7 @@ func (c *Context) FilesFromImportPath(importPath, basePath string) (dir string, 
 	return dir, sourceFiles, testFiles, err
 }
 
-func (c *Context) oncePackage(n Node, importPath, basePath string) *xc.Once {
+func (c *Context) oncePackage(n Node, importPath string) *xc.Once {
 	var pos token.Pos
 	if n != nil {
 		pos = n.Pos()
@@ -277,7 +271,7 @@ func (c *Context) oncePackage(n Node, importPath, basePath string) *xc.Once {
 	return c.fileCentral.Once(
 		importPath,
 		func() interface{} {
-			dir, sourceFiles, _, err := c.FilesFromImportPath(importPath, basePath)
+			dir, sourceFiles, _, err := c.FilesFromImportPath(importPath)
 			p := c.newPackage(importPath, dir)
 			if err != nil {
 				c.errPos(pos, "%s", err)
@@ -323,7 +317,7 @@ func (c *Context) loadPackages(importPaths []string) (map[string]*Package, error
 	importPaths = dedup(importPaths)
 	onces := make([]*xc.Once, len(importPaths))
 	for i, v := range importPaths {
-		onces[i] = c.oncePackage(nil, v, "")
+		onces[i] = c.oncePackage(nil, v)
 	}
 
 	// Wait for all packages to load.
