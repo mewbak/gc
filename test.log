@@ -1109,9 +1109,9 @@
 [FAIL errorcheck: missing error] "goto L jumps into block starting at LINE+3|goto jumps into block" testdata/gc/goto.go:513:9
 [FAIL errorcheck: missing error] "goto L jumps into block starting at LINE+1|goto jumps into block" testdata/gc/goto.go:524:10
 [FAIL errorcheck: missing error] "goto L jumps into block starting at LINE-4|goto jumps into block" testdata/gc/goto.go:536:10
-[FAIL errorcheck: missing error] "redeclared|redefinition|incompatible" "imported and not used" testdata/gc/import1.go:13:19
-[FAIL errorcheck: missing error] "redeclared|redefinition|incompatible" "imported and not used: \x22math\x22 as fmt" testdata/gc/import1.go:17:13
-[FAIL errorcheck: error does not match] "imported and not used: \x22math\x22$": math redeclared, previous declaration at testdata/gc/import1.go:17:2 testdata/gc/import1.go:18:4
+[PASS errorcheck] "redeclared|redefinition|incompatible" "imported and not used": bufio redeclared, previous declaration at testdata/gc/import1.go:12:8 testdata/gc/import1.go:13:8
+[PASS errorcheck] "redeclared|redefinition|incompatible" "imported and not used: \x22math\x22 as fmt": fmt redeclared, previous declaration at testdata/gc/import1.go:16:2 testdata/gc/import1.go:17:2
+[FAIL errorcheck: missing error] "imported and not used: \x22math\x22$" testdata/gc/import1.go:18:11
 [PASS errorcheck] "import statement": import statement requires a string testdata/gc/import5.go:24:8
 [PASS errorcheck] "import statement": import statement requires a string testdata/gc/import5.go:25:8
 [PASS errorcheck] "import statement": import statement requires a string testdata/gc/import5.go:26:8

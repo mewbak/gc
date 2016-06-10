@@ -91,7 +91,13 @@ func (n *ImportSpec) post(lx *lexer) {
 		}
 
 		if isRelativeImportPath(ip) {
-			ip = filepath.Join(lx.pkg.ImportPath, ip)
+			pi := lx.pkg.ImportPath
+			if t := lx.test; t != nil {
+				if _, ok := t.pkgMap[pi]; ok {
+					pi = filepath.Dir(pi)
+				}
+			}
+			ip = filepath.Join(pi, ip)
 		}
 	default:
 		panic("internal error")
@@ -213,10 +219,9 @@ func (n *Prologue) post(lx *lexer) {
 			default:
 				v.name = p.name
 			}
-		default:
-			v.name = dict.SID(filepath.Base(p.ImportPath))
 		}
 
+		//dbg("%s: %q %q", position(v.Pos()), p.ImportPath, p.Name)
 		lx.fileScope.declare(lx, v)
 	}
 }

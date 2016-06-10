@@ -152,6 +152,11 @@ func (c *Context) packageNameFromFile(fname string) (string, error) {
 }
 
 func (c *Context) collectPackages(ip string) (pl []string, pm map[string][]string, err error) {
+	dir0, err := c.DirectoryFromImportPath(selfImportPath)
+	if err != nil {
+		return nil, nil, err
+	}
+
 	dir, err := c.DirectoryFromImportPath(ip)
 	if err != nil {
 		return nil, nil, err
@@ -175,7 +180,7 @@ func (c *Context) collectPackages(ip string) (pl []string, pm map[string][]strin
 			pl = append(pl, nm)
 			m[nm] = true
 		}
-		pm[nm] = append(pm[nm], v)
+		pm[nm] = append(pm[nm], v[len(dir0)+1:])
 	}
 	sort.Strings(pl)
 	for _, v := range pm {
@@ -351,20 +356,23 @@ func testErrorcheck(t *testing.T, c *Context, fname string, logw io.Writer) {
 }
 
 func testErrorcheckdir(t *testing.T, c *Context, fname string, logw io.Writer) {
+	return //TODO-
 	const suff = ".go"
 	if !strings.HasSuffix(fname, suff) {
 		panic("internal error")
 	}
-	fname = fname[:len(fname)-len(suff)] + ".dir"
-	ip := filepath.Join(selfImportPath, fname)
-	pl, pm, err := c.collectPackages(ip)
+
+	pl, pm, err := c.collectPackages(filepath.Join(selfImportPath, fname[:len(fname)-len(suff)]+".dir"))
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	_ = pl
-	_ = pm
-	//dbg("", pl, PrettyString(pm))
+	dbg("====")
+	dbg("", PrettyString(pl))
+	dbg("", PrettyString(pm))
+	c.test.pkgMap = pm
+	_, err = c.loadPackages(pl)
+	errorCheckResults(t, c.test.errChecks, err, fname, logw)
 }
 
 func qmsg(s string) string {

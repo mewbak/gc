@@ -74,6 +74,7 @@ type testContext struct {
 	errChecksMu sync.Mutex
 	exampleAST  interface{}
 	exampleRule int
+	pkgMap      map[string][]string
 }
 
 type contextOptions struct {
@@ -206,6 +207,12 @@ func (c *Context) DirectoryFromImportPath(importPath string) (string, error) {
 // importPath are; a list of normal and testing (*_test.go) go source files or
 // an error, if any.
 func (c *Context) FilesFromImportPath(importPath string) (dir string, sourceFiles []string, testFiles []string, err error) {
+	if t := c.test; t != nil {
+		if sf, ok := t.pkgMap[importPath]; ok {
+			return filepath.Dir(sf[0]), sf, nil, nil
+		}
+	}
+
 	if importPath == "C" {
 		return "", nil, nil, nil
 	}
