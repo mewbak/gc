@@ -60,27 +60,25 @@ func runeClassGenerics(r rune) int {
 type lexer struct {
 	*Context
 	*lex.Lexer
-	build                  bool // Whether build tags, if any, satisfied.
-	closed                 bool // Error limit reached.
-	dotImports             []*ImportDeclaration
-	fileScope              *Scope
-	hold                   xc.Token // Lexer state machine ({TX,RX}CHAN).
-	holdState              int      // Lexer state machine ({TX,RX}CHAN).
-	imports                []*ImportDeclaration
-	lbr                    bool   // Lexer state machine (BODY).
-	lbrStack               []bool // Lexer state machine (BODY).
-	lbrace                 int    // Lexer state machine (BODY).
-	lbraceStack            []int  // Lexer state machine (BODY).
-	lexPrev                rune
-	lookahead              xc.Token // lookahead.Char == yyParse yychar.
-	name                   string
-	parseOnlyPackageClause bool
-	pkg                    *Package
-	pkgName                int  // From the package clause.
-	scanCharPrev           rune // Lexer state machine (semicolon insertion).
-	scope                  *Scope
-	seenPackage            bool // Lexer state machine (check PACKAGE is first).
-	unboundImports         []*ImportDeclaration
+	build          bool // Whether build tags, if any, satisfied.
+	closed         bool // Error limit reached.
+	dotImports     []*ImportDeclaration
+	fileScope      *Scope
+	hold           xc.Token // Lexer state machine ({TX,RX}CHAN).
+	holdState      int      // Lexer state machine ({TX,RX}CHAN).
+	imports        []*ImportDeclaration
+	lbr            bool   // Lexer state machine (BODY).
+	lbrStack       []bool // Lexer state machine (BODY).
+	lbrace         int    // Lexer state machine (BODY).
+	lbraceStack    []int  // Lexer state machine (BODY).
+	lexPrev        rune
+	lookahead      xc.Token // lookahead.Char == yyParse yychar.
+	name           string
+	pkg            *Package
+	scanCharPrev   rune // Lexer state machine (semicolon insertion).
+	scope          *Scope
+	seenPackage    bool // Lexer state machine (check PACKAGE is first).
+	unboundImports []*ImportDeclaration
 }
 
 func newLexer(nm string, sz int, r io.RuneReader, pkg *Package) (*lexer, error) {

@@ -177,7 +177,7 @@ func (c *Context) clearErrors() {
 // package importPath are to be searched for. Relative import paths are
 // computed relative to basePath.
 func (c *Context) DirectoryFromImportPath(importPath, basePath string) (string, error) {
-	if strings.HasPrefix(importPath, "./") || strings.HasPrefix(importPath, "../") {
+	if isRelativeImportPath(importPath) {
 		return filepath.Join(basePath, importPath), nil
 	}
 

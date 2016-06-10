@@ -19,20 +19,25 @@ import (
 
 // Package is a Go package.
 type Package struct {
-	Context     *Context
-	Directory   string
-	Files       []*File // ASTs.
-	ImportPath  string
-	Inits       []*FuncDeclaration // All init() functions.
-	Name        string
-	Scope       *Scope // PackageScope or UniverseScope.
-	SourceFiles []string
-	avoid       map[int]token.Pos // Names declared in file scope.
-	name        int
-	namedBy     string
+	Context       *Context
+	Directory     string
+	Files         []*File // ASTs.
+	ImportPath    string
+	Inits         []*FuncDeclaration // All init() functions.
+	Name          string
+	Scope         *Scope // PackageScope or UniverseScope.
+	SourceFiles   []string
+	avoid         map[int]token.Pos // Names declared in file scope.
+	name          int
+	namedBy       string
+	parseOnlyName bool
 }
 
 func newPackage(c *Context, importPath, dir string) *Package {
+	if isRelativeImportPath(importPath) {
+		panic("internal error")
+	}
+
 	return &Package{
 		Context:    c,
 		Directory:  dir,

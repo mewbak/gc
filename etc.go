@@ -11,6 +11,7 @@ import (
 	"path/filepath"
 	"reflect"
 	"strconv"
+	"strings"
 
 	"github.com/cznic/golex/lex"
 	"github.com/cznic/strutil"
@@ -132,4 +133,8 @@ func sanitizeContext(goos, goarch, goroot string, gopaths []string) error {
 	}
 
 	return nil
+}
+
+func isRelativeImportPath(p string) bool {
+	return strings.HasPrefix(p, "./") || strings.HasPrefix(p, "../")
 }

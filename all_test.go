@@ -139,6 +139,18 @@ func addTestContext(t *testContext) Opt {
 	}
 }
 
+func (c *Context) packageNameFromFile(fname string) (string, error) {
+	c.clearErrors()
+	p := c.newPackage("", "")
+	p.parseOnlyName = true
+	err := p.loadFile(fname)
+	if err := c.errors(err); err != nil {
+		return "", err
+	}
+
+	return p.Name, nil
+}
+
 func TestLoad(t *testing.T) {
 	var importPaths []string
 	root := filepath.Join(runtime.GOROOT(), "src")
@@ -287,7 +299,7 @@ func Test(t *testing.T) {
 				case line == "errorcheck":
 					testErrorcheck(t, c, f.Name(), logw)
 				case line == "errorcheckdir":
-					//TODO errorcheckDir(t, c, f.Name(), logw)
+					testErrorcheckdir(t, c, f.Name(), logw)
 				}
 			case line == "":
 				return nil
@@ -303,6 +315,10 @@ func testErrorcheck(t *testing.T, c *Context, fname string, logw io.Writer) {
 	ip := filepath.Join(selfImportPath, filepath.Dir(fname))
 	_, err := c.loadPackage(ip, []string{fname})
 	errorCheckResults(t, c.test.errChecks, err, fname, logw)
+}
+
+func testErrorcheckdir(t *testing.T, c *Context, fname string, logw io.Writer) {
+	//TODO dbg("", fname)
 }
 
 func qmsg(s string) string {

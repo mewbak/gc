@@ -567,16 +567,14 @@ QualifiedIdent:
 |       IDENTIFIER '.' IDENTIFIER
 
 PackageClause:
-	"package"
+	"package" IDENTIFIER ';'
 	{
-		if !lx.build { // Build tags not satisfied
+		if lx.pkg.parseOnlyName {
+			lx.pkg.Name = string(lhs.Token2.S())
 			return 0
 		}
-	}
-	IDENTIFIER ';'
-	{
-		lx.pkgName = lhs.Token2.Val
-		if lx.parseOnlyPackageClause {
+
+		if !lx.build { // Build tags not satisfied
 			return 0
 		}
 
