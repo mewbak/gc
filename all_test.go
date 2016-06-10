@@ -356,7 +356,7 @@ func testErrorcheck(t *testing.T, c *Context, fname string, logw io.Writer) {
 }
 
 func testErrorcheckdir(t *testing.T, c *Context, fname string, logw io.Writer) {
-	return //TODO-
+	return //TODO
 	const suff = ".go"
 	if !strings.HasSuffix(fname, suff) {
 		panic("internal error")

@@ -221,7 +221,6 @@ func (n *Prologue) post(lx *lexer) {
 			}
 		}
 
-		//dbg("%s: %q %q", position(v.Pos()), p.ImportPath, p.Name)
 		lx.fileScope.declare(lx, v)
 	}
 }
