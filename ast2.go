@@ -89,6 +89,10 @@ func (n *ImportSpec) post(lx *lexer) {
 				return
 			}
 		}
+
+		if isRelativeImportPath(ip) {
+			ip = filepath.Join(lx.pkg.ImportPath, ip)
+		}
 	default:
 		panic("internal error")
 	}
