@@ -233,6 +233,19 @@ func Test(t *testing.T) {
 			return nil
 		}
 
+		if re := *oRE; re != "" {
+			ok, err := regexp.MatchString(re, path)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if !ok {
+				return nil
+			}
+
+			t.Log(path)
+		}
+
 		f, err := os.Open(path)
 		if err != nil {
 			return err
@@ -272,7 +285,7 @@ func Test(t *testing.T) {
 					fmt.Fprintf(logw, "[TODO %q] %s\n", line, path)
 					return nil
 				case line == "errorcheck":
-					errorcheck(t, c, f.Name(), logw)
+					testErrorcheck(t, c, f.Name(), logw)
 				case line == "errorcheckdir":
 					//TODO errorcheckDir(t, c, f.Name(), logw)
 				}
@@ -286,20 +299,7 @@ func Test(t *testing.T) {
 	}
 }
 
-func errorcheck(t *testing.T, c *Context, fname string, logw io.Writer) {
-	if re := *oRE; re != "" {
-		ok, err := regexp.MatchString(re, fname)
-		if err != nil {
-			t.Fatal(err)
-		}
-
-		if !ok {
-			return
-		}
-
-		t.Log(fname)
-	}
-
+func testErrorcheck(t *testing.T, c *Context, fname string, logw io.Writer) {
 	ip := filepath.Join(selfImportPath, filepath.Dir(fname))
 	_, err := c.loadPackage(ip, []string{fname})
 	errorCheckResults(t, c.test.errChecks, err, fname, logw)
