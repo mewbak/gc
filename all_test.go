@@ -151,6 +151,39 @@ func (c *Context) packageNameFromFile(fname string) (string, error) {
 	return p.Name, nil
 }
 
+func (c *Context) collectPackages(ip string) (pl []string, pm map[string][]string, err error) {
+	dir, err := c.DirectoryFromImportPath(ip)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	matches, err := filepath.Glob(filepath.Join(dir, "*.go"))
+	if err != nil {
+		return nil, nil, err
+	}
+
+	pm = map[string][]string{}
+	m := map[string]bool{}
+	for _, v := range matches {
+		nm, err := c.packageNameFromFile(v)
+		if err != nil {
+			return nil, nil, err
+		}
+
+		nm = filepath.Join(ip, nm)
+		if !m[nm] {
+			pl = append(pl, nm)
+			m[nm] = true
+		}
+		pm[nm] = append(pm[nm], v)
+	}
+	sort.Strings(pl)
+	for _, v := range pm {
+		sort.Strings(v)
+	}
+	return pl, pm, nil
+}
+
 func TestLoad(t *testing.T) {
 	var importPaths []string
 	root := filepath.Join(runtime.GOROOT(), "src")
@@ -318,7 +351,20 @@ func testErrorcheck(t *testing.T, c *Context, fname string, logw io.Writer) {
 }
 
 func testErrorcheckdir(t *testing.T, c *Context, fname string, logw io.Writer) {
-	//TODO dbg("", fname)
+	const suff = ".go"
+	if !strings.HasSuffix(fname, suff) {
+		panic("internal error")
+	}
+	fname = fname[:len(fname)-len(suff)] + ".dir"
+	ip := filepath.Join(selfImportPath, fname)
+	pl, pm, err := c.collectPackages(ip)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	_ = pl
+	_ = pm
+	//dbg("", pl, PrettyString(pm))
 }
 
 func qmsg(s string) string {
