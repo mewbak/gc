@@ -361,7 +361,7 @@
 [FAIL errorcheck: missing error] "iota" testdata/gc/fixedbugs/bug186.go:15:11
 [FAIL errorcheck: missing error] "package" testdata/gc/fixedbugs/bug188.go:14:11
 [FAIL errorcheck: missing error] "too few" testdata/gc/fixedbugs/bug189.go:16:14
-[PASS errorcheck] "redecl|redefinition": fmt redeclared, previous declaration at testdata/gc/fixedbugs/bug192.go:9:8 testdata/gc/fixedbugs/bug192.go:11:5
+[PASS errorcheck] "redecl|redefinition": fmt redeclared in this block\n\tprevious declaration at testdata/gc/fixedbugs/bug192.go:9:8 testdata/gc/fixedbugs/bug192.go:11:5
 [FAIL errorcheck: missing error] "shift" testdata/gc/fixedbugs/bug193.go:13:24
 [FAIL errorcheck: missing error] "shift" testdata/gc/fixedbugs/bug193.go:14:24
 [FAIL errorcheck: missing error] "interface" testdata/gc/fixedbugs/bug195.go:9:26
@@ -478,6 +478,7 @@
 [FAIL errorcheck: missing error] "parenthesize" testdata/gc/fixedbugs/bug300.go:27:22
 [FAIL errorcheck: missing error] "parenthesize" testdata/gc/fixedbugs/bug300.go:28:22
 [FAIL errorcheck: missing error] "cannot|incompatible" testdata/gc/fixedbugs/bug305.go:24:1
+[FAIL errorcheck: missing error] "undefined" testdata/gc/fixedbugs/bug313.dir/a.go:10:21
 [FAIL errorcheck: missing error] "type" testdata/gc/fixedbugs/bug318.go:12:18
 [FAIL errorcheck: missing error] "undefined" testdata/gc/fixedbugs/bug323.go:18:12
 [FAIL errorcheck: missing error] "undefined" testdata/gc/fixedbugs/bug323.go:19:12
@@ -547,6 +548,7 @@
 [FAIL errorcheck: missing error] "mismatch" testdata/gc/fixedbugs/bug487.go:17:14
 [FAIL errorcheck: missing error] "mismatch" testdata/gc/fixedbugs/bug487.go:18:13
 [FAIL errorcheck: missing error] "too many|mismatch" testdata/gc/fixedbugs/bug487.go:23:13
+[FAIL errorcheck: missing error] "undefined" testdata/gc/fixedbugs/bug488.dir/a.go:7:18
 [FAIL errorcheck: missing error] "interface contains embedded non-interface int" testdata/gc/fixedbugs/issue10975.go:13:6
 [FAIL errorcheck: missing error] "1e\+646456992 overflows float64" testdata/gc/fixedbugs/issue11326.go:21:23
 [FAIL errorcheck: missing error] "1e\+64645699 overflows float64" testdata/gc/fixedbugs/issue11326.go:22:23
@@ -790,6 +792,7 @@
 [FAIL errorcheck: missing error] "must be function call|must not be parenthesized" testdata/gc/fixedbugs/issue4468.go:26:11
 [FAIL errorcheck: missing error] "must be function call|must not be parenthesized" testdata/gc/fixedbugs/issue4468.go:27:14
 [FAIL errorcheck: missing error] "outside type switch" testdata/gc/fixedbugs/issue4470.go:13:22
+[PASS errorcheck] "fmt redeclared|imported": fmt redeclared in this block\n\tprevious declaration at testdata/gc/fixedbugs/issue4510.dir/f2.go:7:6 testdata/gc/fixedbugs/issue4510.dir/f1.go:7:8
 [PASS errorcheck] "cannot declare init - must be func": cannot declare init - must be function testdata/gc/fixedbugs/issue4517a.go:9:5
 [PASS errorcheck] "cannot declare init - must be func": cannot declare init - must be function testdata/gc/fixedbugs/issue4517b.go:9:7
 [PASS errorcheck] "cannot declare init - must be func": cannot declare init - must be function testdata/gc/fixedbugs/issue4517c.go:9:6

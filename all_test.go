@@ -175,7 +175,6 @@ func (c *Context) collectPackages(ip string) (pl []string, pm map[string][]strin
 			return nil, nil, err
 		}
 
-		nm = filepath.Join(ip, nm)
 		if !m[nm] {
 			pl = append(pl, nm)
 			m[nm] = true
@@ -187,6 +186,42 @@ func (c *Context) collectPackages(ip string) (pl []string, pm map[string][]strin
 		sort.Strings(v)
 	}
 	return pl, pm, nil
+
+	//TODO-	dir0, err := c.DirectoryFromImportPath(selfImportPath)
+	//TODO-	if err != nil {
+	//TODO-		return nil, nil, err
+	//TODO-	}
+	//TODO-
+	//TODO-	dir, err := c.DirectoryFromImportPath(ip)
+	//TODO-	if err != nil {
+	//TODO-		return nil, nil, err
+	//TODO-	}
+	//TODO-
+	//TODO-	matches, err := filepath.Glob(filepath.Join(dir, "*.go"))
+	//TODO-	if err != nil {
+	//TODO-		return nil, nil, err
+	//TODO-	}
+	//TODO-
+	//TODO-	pm = map[string][]string{}
+	//TODO-	m := map[string]bool{}
+	//TODO-	for _, v := range matches {
+	//TODO-		nm, err := c.packageNameFromFile(v)
+	//TODO-		if err != nil {
+	//TODO-			return nil, nil, err
+	//TODO-		}
+	//TODO-
+	//TODO-		nm = filepath.Join(ip, nm)
+	//TODO-		if !m[nm] {
+	//TODO-			pl = append(pl, nm)
+	//TODO-			m[nm] = true
+	//TODO-		}
+	//TODO-		pm[nm] = append(pm[nm], v[len(dir0)+1:])
+	//TODO-	}
+	//TODO-	sort.Strings(pl)
+	//TODO-	for _, v := range pm {
+	//TODO-		sort.Strings(v)
+	//TODO-	}
+	//TODO-	return pl, pm, nil
 }
 
 func TestLoad(t *testing.T) {
@@ -356,20 +391,27 @@ func testErrorcheck(t *testing.T, c *Context, fname string, logw io.Writer) {
 }
 
 func testErrorcheckdir(t *testing.T, c *Context, fname string, logw io.Writer) {
-	return //TODO
 	const suff = ".go"
 	if !strings.HasSuffix(fname, suff) {
 		panic("internal error")
 	}
 
-	pl, pm, err := c.collectPackages(filepath.Join(selfImportPath, fname[:len(fname)-len(suff)]+".dir"))
+	ip := filepath.Join(selfImportPath, fname[:len(fname)-len(suff)]+".dir")
+	pl, pm, err := c.collectPackages(ip)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	dbg("====")
-	dbg("", PrettyString(pl))
-	dbg("", PrettyString(pm))
+	//dbg("====")
+	//dbg("", PrettyString(pl))
+	//dbg("", PrettyString(pm))
+	if len(pl) == 1 {
+		_, err := c.loadPackage(ip, pm[pl[0]])
+		errorCheckResults(t, c.test.errChecks, err, fname, logw)
+		return
+	}
+
+	return //TODO-
 	c.test.pkgMap = pm
 	_, err = c.loadPackages(pl)
 	errorCheckResults(t, c.test.errChecks, err, fname, logw)
@@ -382,6 +424,10 @@ func qmsg(s string) string {
 var errCheckPatterns = regexp.MustCompile(`"([^"]*)"`)
 
 func errorCheckResults(t *testing.T, checks []xc.Token, err error, fname string, logw io.Writer) {
+	if len(checks) == 0 {
+		panic("internal error")
+	}
+
 	if *oRE != "" {
 		for _, v := range checks {
 			t.Log(PrettyString(v))
@@ -408,10 +454,10 @@ func errorCheckResults(t *testing.T, checks []xc.Token, err error, fname string,
 	var a scanner.ErrorList
 	fail := false
 	for k := range m {
-		line := k.Pos.Line
+		kpos := k.Pos
 		for l := range n {
-			line2 := position(l.Pos()).Line
-			if line2 != line {
+			lpos := position(l.Pos())
+			if kpos.Line != lpos.Line || kpos.Filename != lpos.Filename {
 				continue
 			}
 

@@ -115,7 +115,12 @@ func (s *Scope) declare(lx *lexer, d Declaration) {
 	default:
 		if s.Kind == PackageScope { // TLD.
 			if ex := lx.pkg.avoid[nm]; ex != 0 {
-				lx.err(d, "%s redeclared, previous declaration at %s", dict.S(nm), position(ex))
+				switch {
+				case position(d.Pos()).Filename == position(ex).Filename:
+					lx.err(d, "%s redeclared in this block\n\tprevious declaration at %s", dict.S(nm), position(ex))
+				default:
+					lx.errPos(ex, "%s redeclared in this block\n\tprevious declaration at %s", dict.S(nm), position(d.Pos()))
+				}
 				return
 			}
 		}
