@@ -174,6 +174,7 @@ import (
 	SwitchCase		"switch case/default clause"
 	SwitchCaseBlock		"switch case/default clause statement block"
 	SwitchCaseList		"switch case/default clause list"
+	SwitchHeader		"switch statement header"
 	SwitchStatement		"switch statement"
 	TopLevelDecl		"top level declaration"
 	TopLevelDeclList	"top level declaration list"
@@ -461,7 +462,7 @@ IdentifierList:
 	IDENTIFIER
 |       IdentifierList ',' IDENTIFIER
 
-/*yy:example "package a ; switch b {" */
+/*yy:example "package a ; if b {" */
 IfHeader:
 	SimpleStatementOpt
 |       SimpleStatementOpt ';' SimpleStatementOpt
@@ -757,9 +758,25 @@ SwitchCaseList:
 	SwitchCaseBlock
 |       SwitchCaseList SwitchCaseBlock
 
+/*yy:example "package a ; switch b {" */
+SwitchHeader:
+	SimpleStatementOpt
+|       SimpleStatementOpt ';'
+|       SimpleStatementOpt ';' Expression
+|       SimpleStatementOpt ';' IDENTIFIER ":=" PrimaryExpression '.' '(' "type" ')'
+
 SwitchStatement:
-	"switch" IfHeader SwitchBody
+	"switch" SwitchHeader
 	{
+		var t xc.Token
+		if sw := $2.(*SwitchHeader); sw.Case == 3 { // SimpleStatementOpt ';' IDENTIFIER ":=" PrimaryExpression '.' '(' "type" ')'
+			t = sw.Token2 // IDENTIFIER
+		}
+		lx.switchDecl = append(lx.switchDecl, t)
+	}
+	SwitchBody
+	{
+		lx.switchDecl = lx.switchDecl[:len(lx.switchDecl)-1]
 		lx.popScope() // Implicit block.
 	}
 

@@ -78,6 +78,7 @@ type lexer struct {
 	scanCharPrev   rune // Lexer state machine (semicolon insertion).
 	scope          *Scope
 	seenPackage    bool // Lexer state machine (check PACKAGE is first).
+	switchDecl     []xc.Token
 	unboundImports []*ImportDeclaration
 }
 
@@ -433,8 +434,17 @@ again:
 		s := lx.pushScope()
 		s.isFnScope = true
 		s.isMergeScope = true
-	case IF, FOR, SWITCH, CASE, DEFAULT: // Implicit blocks.
+	case IF, FOR, SWITCH: // Implicit blocks.
 		lx.pushScope()
+	case CASE, DEFAULT: // Implicit blocks.
+		lx.pushScope()
+		var t xc.Token
+		if n := len(lx.switchDecl); n > 0 {
+			t = lx.switchDecl[n-1]
+		}
+		if t.IsValid() {
+			lx.scope.declare(lx, newVarDeclaration(t, lx.lookahead.Pos()))
+		}
 	}
 	lx.lexPrev = r
 

@@ -1701,7 +1701,7 @@
 [PASS errorcheck] "unexpected comma" "unexpected ,": unexpected , testdata/gc/syntax/import.go:10:6
 [FAIL errorcheck: error does not match] "name list not allowed in interface type": unexpected ,, expected function/method signature or one of ['(', '.', ';', '}'] testdata/gc/syntax/interface.go:10:3
 [FAIL errorcheck: error does not match] "missing .*{.* after if clause|undefined": unexpected ;, expected { testdata/gc/syntax/semi1.go:10:11
-[FAIL errorcheck: error does not match] "missing .*{.* after switch clause|undefined": unexpected ;, expected { testdata/gc/syntax/semi2.go:10:14
+[FAIL errorcheck: error does not match] "missing .*{.* after switch clause|undefined": unexpected ;, expected optional generic arguments or one of [!=, &&, &^, '%', '&', '(', '*', '+', '-', '.', '/', '<', '>', '[', '^', '{', '|', :=, <-, <<, <=, ==, >=, >>, {, ||, «] testdata/gc/syntax/semi2.go:10:14
 [FAIL errorcheck: error does not match] "missing .*{.* after for clause|undefined": unexpected ;, expected { testdata/gc/syntax/semi3.go:10:14
 [FAIL errorcheck: error does not match] "missing .*{.* after for clause|missing operand": unexpected {, expected optional simple statement or one of ['!', '&', '(', '*', '+', '-', ';', '[', '^', <-, chan, func, identifier, interface, literal, map, struct] testdata/gc/syntax/semi4.go:11:2
 [FAIL errorcheck: error does not match] "unexpected semicolon or newline before .?{.?": unexpected { testdata/gc/syntax/semi5.go:10:1
@@ -1721,7 +1721,7 @@
 [FAIL errorcheck: missing error] "duplicate" testdata/gc/typeswitch2.go:18:12
 [FAIL errorcheck: missing error] "duplicate" testdata/gc/typeswitch2.go:22:18
 [FAIL errorcheck: missing error] "duplicate" testdata/gc/typeswitch2.go:32:5
-[FAIL errorcheck: error does not match] "declared and not used": no new variables on left side of := testdata/gc/typeswitch2.go:43:19
+[FAIL errorcheck: missing error] "declared and not used" testdata/gc/typeswitch2.go:43:33
 [FAIL errorcheck: missing error] "impossible" testdata/gc/typeswitch3.go:24:15
 [FAIL errorcheck: missing error] "invalid variable name _|no new variables" testdata/gc/typeswitch3.go:39:26
 [FAIL errorcheck: missing error] "undefined.*x" testdata/gc/undef.go:13:8

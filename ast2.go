@@ -304,14 +304,6 @@ func (n *SimpleStatement) shortVarDecl(lx *lexer) {
 		}
 		a = append(a, l.Expression.ident())
 	}
-	//if len(a) == 1 {
-	//	t := a[0]
-	//	if t.IsValid() {
-	//		lx.scope.declare(lx, newVarDeclaration(a[0], lx.lookahead.Pos()))
-	//	}
-	//	return
-	//}
-
 	hasNew := false
 	for _, v := range a {
 		if !v.IsValid() {
