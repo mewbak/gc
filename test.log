@@ -312,6 +312,7 @@
 [FAIL errorcheck: missing error] "illegal|inval|shift" testdata/gc/fixedbugs/bug073.go:13:15
 [FAIL errorcheck: missing error] "composite" testdata/gc/fixedbugs/bug074.go:10:31
 [FAIL errorcheck: missing error] "loop|type" testdata/gc/fixedbugs/bug081.go:9:15
+[FAIL errorcheck: missing error] "bug0" testdata/gc/fixedbugs/bug083.dir/bug1.go:13:17
 [FAIL errorcheck: missing error] "undefined" testdata/gc/fixedbugs/bug085.go:12:15
 [FAIL errorcheck: missing error] "return" testdata/gc/fixedbugs/bug086.go:14:3
 [FAIL errorcheck: missing error] "truncate" testdata/gc/fixedbugs/bug090.go:36:14
@@ -334,6 +335,7 @@
 [FAIL errorcheck: missing error] "illegal|incompatible|nil" testdata/gc/fixedbugs/bug127.go:11:21
 [FAIL errorcheck: missing error] "convert|cannot|incompatible" testdata/gc/fixedbugs/bug131.go:11:19
 [FAIL errorcheck: missing error] "duplicate" testdata/gc/fixedbugs/bug132.go:10:12
+[FAIL errorcheck: missing error] "field|undef" testdata/gc/fixedbugs/bug133.dir/bug2.go:15:16
 [FAIL errorcheck: missing error] "initialization loop|depends upon itself" testdata/gc/fixedbugs/bug13343.go:10:13
 [FAIL errorcheck: missing error] "L" testdata/gc/fixedbugs/bug136.go:13:13
 [FAIL errorcheck: missing error] "L1" testdata/gc/fixedbugs/bug136.go:19:15
@@ -541,6 +543,11 @@
 [PASS errorcheck] "unexpected|missing|undefined": unexpected EOF, expected expression/type literal or one of ['!', '&', '(', ')', '*', '+', '-', '[', '^', <-, chan, func, identifier, interface, literal, map, struct] testdata/gc/fixedbugs/bug435.go:15:48
 [FAIL errorcheck: missing error] "undefined|expected package" testdata/gc/fixedbugs/bug451.go:9:12
 [FAIL errorcheck: missing error] "loop|depends upon itself" testdata/gc/fixedbugs/bug459.go:12:32
+[FAIL errorcheck: missing error] "unexported field" testdata/gc/fixedbugs/bug460.dir/b.go:12:16
+[FAIL errorcheck: missing error] "unexported field" testdata/gc/fixedbugs/bug460.dir/b.go:13:16
+[FAIL errorcheck: missing error] "unexported field" testdata/gc/fixedbugs/bug460.dir/b.go:14:16
+[FAIL errorcheck: missing error] "unexported field" testdata/gc/fixedbugs/bug460.dir/b.go:15:16
+[FAIL errorcheck: missing error] "unexported field" testdata/gc/fixedbugs/bug460.dir/b.go:16:16
 [FAIL errorcheck: missing error] "unknown T? ?field" testdata/gc/fixedbugs/bug462.go:17:15
 [FAIL errorcheck: missing error] "refers to itself|definition loop" testdata/gc/fixedbugs/bug463.go:12:13
 [FAIL errorcheck: missing error] "refers to itself|definition loop" testdata/gc/fixedbugs/bug463.go:16:11
@@ -549,6 +556,21 @@
 [FAIL errorcheck: missing error] "mismatch" testdata/gc/fixedbugs/bug487.go:18:13
 [FAIL errorcheck: missing error] "too many|mismatch" testdata/gc/fixedbugs/bug487.go:23:13
 [FAIL errorcheck: missing error] "undefined" testdata/gc/fixedbugs/bug488.dir/a.go:7:18
+[FAIL errorcheck: missing error] "x\.Do undefined \(type \*Imported is pointer to interface, not interface\)" testdata/gc/fixedbugs/issue10700.dir/test.go:24:9
+[FAIL errorcheck: missing error] "x\.do undefined \(type \*Imported is pointer to interface, not interface\)" testdata/gc/fixedbugs/issue10700.dir/test.go:25:9
+[FAIL errorcheck: missing error] "x\.Dont undefined \(type \*Imported is pointer to interface, not interface\)" testdata/gc/fixedbugs/issue10700.dir/test.go:27:14
+[FAIL errorcheck: missing error] "\(\*x\)\.Dont undefined \(type Imported has no field or method Dont\)" testdata/gc/fixedbugs/issue10700.dir/test.go:28:14
+[FAIL errorcheck: missing error] "y\.do undefined \(type \*HasAMethod has no field or method do, but does have Do\)" testdata/gc/fixedbugs/issue10700.dir/test.go:31:9
+[FAIL errorcheck: missing error] "\(\*y\)\.do undefined \(type HasAMethod has no field or method do, but does have Do\)" testdata/gc/fixedbugs/issue10700.dir/test.go:33:14
+[FAIL errorcheck: missing error] "y\.Dont undefined \(type \*HasAMethod has no field or method Dont\)" testdata/gc/fixedbugs/issue10700.dir/test.go:34:14
+[FAIL errorcheck: missing error] "\(\*y\)\.Dont undefined \(type HasAMethod has no field or method Dont\)" testdata/gc/fixedbugs/issue10700.dir/test.go:35:14
+[FAIL errorcheck: missing error] "z\.Do undefined \(type \*other\.Exported is pointer to interface, not interface\)" testdata/gc/fixedbugs/issue10700.dir/test.go:37:9
+[FAIL errorcheck: missing error] "z\.do undefined \(type \*other\.Exported is pointer to interface, not interface\)" testdata/gc/fixedbugs/issue10700.dir/test.go:38:9
+[FAIL errorcheck: missing error] "\(\*z\)\.do undefined \(type other.Exported has no field or method do, but does have Do\)" testdata/gc/fixedbugs/issue10700.dir/test.go:40:16
+[FAIL errorcheck: missing error] "z\.Dont undefined \(type \*other\.Exported is pointer to interface, not interface\)" testdata/gc/fixedbugs/issue10700.dir/test.go:41:16
+[FAIL errorcheck: missing error] "\(\*z\)\.Dont undefined \(type other\.Exported has no field or method Dont\)" testdata/gc/fixedbugs/issue10700.dir/test.go:42:16
+[FAIL errorcheck: missing error] "z\.secret undefined \(type \*other\.Exported is pointer to interface, not interface\)" testdata/gc/fixedbugs/issue10700.dir/test.go:43:16
+[FAIL errorcheck: missing error] "\(\*z\)\.secret undefined \(cannot refer to unexported field or method secret\)" testdata/gc/fixedbugs/issue10700.dir/test.go:44:16
 [FAIL errorcheck: missing error] "interface contains embedded non-interface int" testdata/gc/fixedbugs/issue10975.go:13:6
 [FAIL errorcheck: missing error] "1e\+646456992 overflows float64" testdata/gc/fixedbugs/issue11326.go:21:23
 [FAIL errorcheck: missing error] "1e\+64645699 overflows float64" testdata/gc/fixedbugs/issue11326.go:22:23
@@ -865,6 +887,11 @@
 [FAIL errorcheck: missing error] "undefined.*Blah" testdata/gc/fixedbugs/issue5581.go:29:14
 [FAIL errorcheck: missing error] "array bound is too large|array bound overflows" testdata/gc/fixedbugs/issue5609.go:13:23
 [FAIL errorcheck: missing error] "invalid map key type" testdata/gc/fixedbugs/issue5698.go:18:22
+[FAIL errorcheck: missing error] "imported and not used: \x22a\x22 as surprise|imported and not used: surprise" testdata/gc/fixedbugs/issue5957.dir/c.go:4:8
+[FAIL errorcheck: missing error] "imported and not used: \x22b\x22 as surprise2|imported and not used: surprise2" testdata/gc/fixedbugs/issue5957.dir/c.go:5:8
+[FAIL errorcheck: missing error] "imported and not used: \x22b\x22$|imported and not used: surprise2" testdata/gc/fixedbugs/issue5957.dir/c.go:6:10
+[FAIL errorcheck: missing error] "imported and not used: \x22math\x22 as foo|imported and not used: math" testdata/gc/fixedbugs/issue5957.dir/c.go:7:13
+[FAIL errorcheck: missing error] "imported and not used: \x22strings\x22|imported and not used: strings" testdata/gc/fixedbugs/issue5957.dir/c.go:9:12
 [FAIL errorcheck: missing error] "use of untyped nil" testdata/gc/fixedbugs/issue6004.go:10:10
 [FAIL errorcheck: missing error] "use of untyped nil" testdata/gc/fixedbugs/issue6004.go:11:16
 [FAIL errorcheck: missing error] "use of untyped nil" testdata/gc/fixedbugs/issue6004.go:12:16
@@ -1115,6 +1142,12 @@
 [PASS errorcheck] "redeclared|redefinition|incompatible" "imported and not used": bufio redeclared, previous declaration at testdata/gc/import1.go:12:8 testdata/gc/import1.go:13:8
 [PASS errorcheck] "redeclared|redefinition|incompatible" "imported and not used: \x22math\x22 as fmt": fmt redeclared, previous declaration at testdata/gc/import1.go:16:2 testdata/gc/import1.go:17:2
 [FAIL errorcheck: missing error] "imported and not used: \x22math\x22$" testdata/gc/import1.go:18:11
+[FAIL errorcheck: missing error] "imported and not used.*fmt" testdata/gc/import4.dir/import4.go:12:14
+[FAIL errorcheck: missing error] "imported and not used.*math" testdata/gc/import4.dir/import4.go:15:17
+[FAIL errorcheck: missing error] "imported and not used.*bufio" testdata/gc/import4.dir/import4.go:18:18
+[FAIL errorcheck: missing error] "imported and not used.*empty" testdata/gc/import4.dir/import4.go:21:18
+[FAIL errorcheck: missing error] "imported and not used.*empty" testdata/gc/import4.dir/import4.go:22:20
+[FAIL errorcheck: error does not match] "imported and not used.*empty": empty redeclared, previous declaration at testdata/gc/import4.dir/import4.go:21:8 testdata/gc/import4.dir/import4.go:23:10
 [PASS errorcheck] "import statement": import statement requires a string testdata/gc/import5.go:24:8
 [PASS errorcheck] "import statement": import statement requires a string testdata/gc/import5.go:25:8
 [PASS errorcheck] "import statement": import statement requires a string testdata/gc/import5.go:26:8
@@ -1187,6 +1220,9 @@
 [FAIL errorcheck: missing error] "incompatible|missing _ method" testdata/gc/interface/explicit.go:101:19
 [FAIL errorcheck: missing error] "pointer to interface" testdata/gc/interface/pointer.go:35:35
 [FAIL errorcheck: missing error] "pointer to interface|incompatible type" testdata/gc/interface/pointer.go:37:28
+[FAIL errorcheck: missing error] "private" testdata/gc/interface/private.dir/prog.go:28:17
+[FAIL errorcheck: missing error] "private" testdata/gc/interface/private.dir/prog.go:30:27
+[FAIL errorcheck: missing error] "private" testdata/gc/interface/private.dir/prog.go:32:12
 [FAIL errorcheck: missing error] "does not implement|requires a pointer" testdata/gc/interface/receiver1.go:40:8
 [FAIL errorcheck: missing error] "does not implement|requires a pointer" testdata/gc/interface/receiver1.go:47:8
 [FAIL errorcheck: missing error] "label .*L1.* defined and not used" testdata/gc/label.go:16:5

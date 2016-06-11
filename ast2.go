@@ -90,15 +90,15 @@ func (n *ImportSpec) post(lx *lexer) {
 			}
 		}
 
-		//TODO if isRelativeImportPath(ip) {
-		//TODO 	pi := lx.pkg.ImportPath
-		//TODO 	if t := lx.test; t != nil {
-		//TODO 		if _, ok := t.pkgMap[pi]; ok {
-		//TODO 			pi = filepath.Dir(pi)
-		//TODO 		}
-		//TODO 	}
-		//TODO 	ip = filepath.Join(pi, ip)
-		//TODO }
+		if isRelativeImportPath(ip) {
+			pi := lx.pkg.ImportPath
+			if t := lx.test; t != nil {
+				if _, ok := t.pkgMap[pi]; ok {
+					pi = filepath.Dir(pi)
+				}
+			}
+			ip = filepath.Join(pi, ip)
+		}
 	default:
 		panic("internal error")
 	}
