@@ -262,7 +262,7 @@ func (n *Prologue) post(lx *lexer) {
 
 // ---------------------------------------------------------------------- Range
 
-func (n *Range) post1(lx *lexer) {
+func (n *Range) shortVarDecl(lx *lexer) {
 	if n.Case != 1 { // ExpressionList ":=" "range" Expression
 		panic("internal error")
 	}
@@ -289,7 +289,7 @@ func (n *Range) post1(lx *lexer) {
 
 // ----------------------------------------------------------------- SwitchCase
 
-func (n *SwitchCase) post2(lx *lexer) {
+func (n *SwitchCase) shortVarDecl(lx *lexer) {
 	if n.Case != 2 { // "case" ArgumentList ":=" Expression ':'
 		panic("internal error")
 	}

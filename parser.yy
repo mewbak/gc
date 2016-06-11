@@ -624,7 +624,7 @@ Range:
 	ExpressionList '=' "range" Expression
 |       ExpressionList ":=" "range" Expression
 	{
-		lhs.post1(lx)
+		lhs.shortVarDecl(lx)
 	}
 |       "range" Expression
 
@@ -738,7 +738,7 @@ SwitchCase:
 |       "case" ArgumentList '=' Expression ':'
 |       "case" ArgumentList ":=" Expression ':'
 	{
-		lhs.post2(lx)
+		lhs.shortVarDecl(lx)
 	}
 |       "default" ':'	
 |	"case" error
