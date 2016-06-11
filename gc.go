@@ -8,7 +8,7 @@
 //go:generate stringer -type ValueKind
 //go:generate go run generate.go -2
 
-// Package gc is a Go compiler front end. Work in progess (5.45%).
+// Package gc is a Go compiler front end. Work in progess (5.91%).
 //
 // CGO
 //

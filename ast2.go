@@ -283,7 +283,7 @@ func (n *Range) shortVarDecl(lx *lexer) {
 			continue
 		}
 
-		lx.err(l.Expression, "expected identifier")
+		lx.err(l.Expression, "non-name on left side of :=")
 	}
 	if l != nil {
 		lx.err(l.Expression, "too many variables declared by the range clause")
@@ -295,6 +295,23 @@ func (n *Range) shortVarDecl(lx *lexer) {
 func (n *SimpleStatement) shortVarDecl(lx *lexer) {
 	if n.Case != 4 { // ExpressionList ":=" ExpressionList
 		panic("internal error")
+	}
+	var a []xc.Token
+	for l := n.ExpressionList; l != nil; l = l.ExpressionList {
+		t := l.Expression.ident()
+		if !t.IsValid() {
+			lx.err(l.Expression, "non-name on left side of :=")
+		}
+		a = append(a, l.Expression.ident())
+	}
+	switch {
+	case len(a) == 1:
+		t := a[0]
+		if t.IsValid() {
+			lx.scope.declare(lx, newVarDeclaration(a[0], lx.lookahead.Pos()))
+		}
+	default:
+		//TODO
 	}
 }
 
@@ -321,7 +338,7 @@ func (n *SwitchCase) shortVarDecl(lx *lexer) {
 			continue
 		}
 
-		lx.err(l.Argument, "expected identifier")
+		lx.err(l.Argument, "non-name on left side of :=")
 	}
 	if l != nil {
 		lx.err(l.Argument, "too many variables declared by the case clause")

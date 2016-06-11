@@ -262,11 +262,11 @@
 [FAIL errorcheck: missing error] "[.][.][.]" testdata/gc/ddd1.go:58:26
 [FAIL errorcheck: missing error] "[.][.][.]" testdata/gc/ddd1.go:59:23
 [FAIL errorcheck: missing error] "[.][.][.]" testdata/gc/ddd1.go:60:37
-[FAIL errorcheck: missing error] "redeclared|no new" testdata/gc/declbad.go:20:13
+[PASS errorcheck] "redeclared|no new": i redeclared, previous declaration at testdata/gc/declbad.go:19:3 testdata/gc/declbad.go:20:3
 [FAIL errorcheck: missing error] "redeclared|cannot assign|incompatible" testdata/gc/declbad.go:26:19
 [FAIL errorcheck: missing error] "redeclared|cannot assign|incompatible" testdata/gc/declbad.go:32:19
 [FAIL errorcheck: missing error] "redeclared|no new" testdata/gc/declbad.go:38:16
-[FAIL errorcheck: missing error] "redeclared|no new|incompatible" testdata/gc/declbad.go:44:21
+[PASS errorcheck] "redeclared|no new|incompatible": i redeclared, previous declaration at testdata/gc/declbad.go:43:3 testdata/gc/declbad.go:44:3
 [FAIL errorcheck: missing error] "redeclared|no new|incompatible" testdata/gc/declbad.go:52:10
 [FAIL errorcheck: missing error] "redeclared|no new" testdata/gc/declbad.go:58:16
 [FAIL errorcheck: missing error] "redeclared|no new" testdata/gc/declbad.go:64:19
@@ -295,9 +295,9 @@
 [FAIL errorcheck: missing error] "overflow" testdata/gc/fixedbugs/bug015.go:11:26
 [FAIL errorcheck: missing error] "overflows|negative" testdata/gc/fixedbugs/bug016.go:11:14
 [FAIL errorcheck: missing error] "illegal|is not|invalid" testdata/gc/fixedbugs/bug022.go:12:18
-[FAIL errorcheck: missing error] "declar|:=" testdata/gc/fixedbugs/bug030.go:11:10
-[FAIL errorcheck: missing error] "redecl|no new" testdata/gc/fixedbugs/bug035.go:10:18
-[FAIL errorcheck: missing error] "redecl|no new" testdata/gc/fixedbugs/bug035.go:11:18
+[PASS errorcheck] "declar|:=": x redeclared, previous declaration at testdata/gc/fixedbugs/bug030.go:10:6 testdata/gc/fixedbugs/bug030.go:11:2
+[PASS errorcheck] "redecl|no new": i redeclared, previous declaration at testdata/gc/fixedbugs/bug035.go:9:17 testdata/gc/fixedbugs/bug035.go:10:2
+[PASS errorcheck] "redecl|no new": f redeclared, previous declaration at testdata/gc/fixedbugs/bug035.go:9:24 testdata/gc/fixedbugs/bug035.go:11:2
 [FAIL errorcheck: missing error] "undef" testdata/gc/fixedbugs/bug037.go:10:18
 [PASS errorcheck] "redecl|redefinition": x redeclared, previous declaration at testdata/gc/fixedbugs/bug039.go:9:9 testdata/gc/fixedbugs/bug039.go:10:6
 [PASS errorcheck] "duplicate argument|redefinition": duplicate argument x testdata/gc/fixedbugs/bug040.go:10:2
@@ -498,7 +498,7 @@
 [FAIL errorcheck: error does not match] "unexpected literal 2.01|expected ';' or '}' or newline|not enough arguments to return": unexpected literal testdata/gc/fixedbugs/bug349.go:12:14
 [FAIL errorcheck: missing error] "T[.]m redeclared|redefinition" testdata/gc/fixedbugs/bug350.go:12:17
 [FAIL errorcheck: missing error] "[(][*]T[)][.]p redeclared|redefinition" testdata/gc/fixedbugs/bug350.go:15:18
-[FAIL errorcheck: missing error] "non-name [(]x[)]|non-name on left side" testdata/gc/fixedbugs/bug351.go:12:12
+[PASS errorcheck] "non-name [(]x[)]|non-name on left side": non-name on left side of := testdata/gc/fixedbugs/bug351.go:12:2
 [FAIL errorcheck: missing error] "undefined.*io.ReadWriterCloser" testdata/gc/fixedbugs/bug353.go:16:37
 [FAIL errorcheck: missing error] "false evaluated but not used|value computed is not used" testdata/gc/fixedbugs/bug357.go:18:9
 [FAIL errorcheck: error does not match] "syntax error|not an expression|invalid use of type": unexpected ;, expected left brace or one of ['(', ')', ',', ':', '=', '{', ..., :=, {] testdata/gc/fixedbugs/bug358.go:20:55
@@ -524,8 +524,8 @@
 [FAIL errorcheck: missing error] "cannot use 0 .type int.|has no methods" testdata/gc/fixedbugs/bug386.go:10:29
 [FAIL errorcheck: missing error] "cannot use -1 .type int.|has no methods" testdata/gc/fixedbugs/bug386.go:12:31
 [PASS errorcheck] "cannot declare name runtime.UintType|mixed named and unnamed|undefined identifier": mixed named and unnamed parameters testdata/gc/fixedbugs/bug388.go:12:10
-[FAIL errorcheck: missing error] "cannot declare name runtime.UintType|non-name on left side|undefined identifier" testdata/gc/fixedbugs/bug388.go:17:30
-[FAIL errorcheck: missing error] "non-name main.i|non-name on left side" testdata/gc/fixedbugs/bug388.go:22:14
+[PASS errorcheck] "cannot declare name runtime.UintType|non-name on left side|undefined identifier": non-name on left side of := testdata/gc/fixedbugs/bug388.go:17:2
+[PASS errorcheck] "non-name main.i|non-name on left side": non-name on left side of := testdata/gc/fixedbugs/bug388.go:22:2
 [PASS errorcheck] "unexpected [.]|expected type": unexpected ., expected one of ['(', ')', '*', ',', ';', '=', '[', '}', <-, case, chan, default, func, identifier, interface, map, struct] testdata/gc/fixedbugs/bug388.go:27:10
 [PASS errorcheck] "unexpected [.]|expected type": unexpected ., expected one of ['(', ')', '*', ',', ';', '=', '[', '}', <-, case, chan, default, func, identifier, interface, map, struct] testdata/gc/fixedbugs/bug388.go:32:9
 [FAIL errorcheck: missing error] "cannot use fn .type func.float32.. as type func.int. in assignment|different parameter types" testdata/gc/fixedbugs/bug389.go:12:27
@@ -1710,7 +1710,7 @@
 [FAIL errorcheck: missing error] "non-declaration statement outside function body|expected declaration" testdata/gc/syntax/topexpr.go:9:21
 [FAIL errorcheck: missing error] "non-declaration statement outside function body|expected declaration" testdata/gc/syntax/topexpr.go:14:5
 [FAIL errorcheck: missing error] "non-declaration statement outside function body|expected declaration" testdata/gc/syntax/topexpr.go:19:13
-[FAIL errorcheck: missing error] "invalid variable name" testdata/gc/syntax/typesw.go:10:45
+[FAIL errorcheck: error does not match] "invalid variable name": non-name on left side of := testdata/gc/syntax/typesw.go:10:9
 [FAIL errorcheck: error does not match] "unexpected { at end of statement|expected ';' or '}' or newline": unexpected {, expected one of [')', ';', '=', '}', case, default] testdata/gc/syntax/vareq.go:10:25
 [FAIL errorcheck: error does not match] "unexpected { at end of statement|unexpected { after top level declaration|expected ';' or newline after top level declaration": unexpected {, expected one of [')', ';', '=', '}', case, default] testdata/gc/syntax/vareq1.go:9:24
 [FAIL errorcheck: missing error] "undefined.*b" testdata/gc/typecheck.go:11:24
@@ -1721,7 +1721,7 @@
 [FAIL errorcheck: missing error] "duplicate" testdata/gc/typeswitch2.go:18:12
 [FAIL errorcheck: missing error] "duplicate" testdata/gc/typeswitch2.go:22:18
 [FAIL errorcheck: missing error] "duplicate" testdata/gc/typeswitch2.go:32:5
-[FAIL errorcheck: missing error] "declared and not used" testdata/gc/typeswitch2.go:43:33
+[FAIL errorcheck: error does not match] "declared and not used": t redeclared, previous declaration at testdata/gc/typeswitch2.go:43:9 testdata/gc/typeswitch2.go:43:17
 [FAIL errorcheck: missing error] "impossible" testdata/gc/typeswitch3.go:24:15
 [FAIL errorcheck: missing error] "invalid variable name _|no new variables" testdata/gc/typeswitch3.go:39:26
 [FAIL errorcheck: missing error] "undefined.*x" testdata/gc/undef.go:13:8
