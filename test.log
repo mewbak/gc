@@ -615,7 +615,7 @@
 [FAIL errorcheck: missing error] "cannot use .* as type int in array or slice literal" testdata/gc/fixedbugs/issue13365.go:22:18
 [FAIL errorcheck: missing error] "cannot use .* as type int in array or slice literal" testdata/gc/fixedbugs/issue13365.go:23:18
 [FAIL errorcheck: missing error] "cannot use .* as type int in array or slice literal" testdata/gc/fixedbugs/issue13365.go:24:18
-[FAIL errorcheck: missing error] "x repeated on left side of :=" testdata/gc/fixedbugs/issue13415.go:14:38
+[PASS errorcheck] "x repeated on left side of :=": x repeated on left side of := testdata/gc/fixedbugs/issue13415.go:14:7
 [FAIL errorcheck: missing error] "1e\+646456992 overflows integer" testdata/gc/fixedbugs/issue13471.go:12:30
 [FAIL errorcheck: missing error] "1e\+64645699 overflows integer" testdata/gc/fixedbugs/issue13471.go:13:30
 [FAIL errorcheck: missing error] "1e\+6464569 overflows integer" testdata/gc/fixedbugs/issue13471.go:14:30

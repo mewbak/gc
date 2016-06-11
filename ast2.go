@@ -18,6 +18,16 @@ type Node interface {
 	Pos() token.Pos
 }
 
+// ------------------------------------------------------------------- Argument
+
+func (n *Argument) ident() (t xc.Token) {
+	if n.Case != 0 { // Expression
+		return t
+	}
+
+	return n.Expression.ident()
+}
+
 // ------------------------------------------------------------------ ConstSpec
 
 func (n *ConstSpec) decl(lx *lexer, t *Typ, el *ExpressionList) {
@@ -25,6 +35,31 @@ func (n *ConstSpec) decl(lx *lexer, t *Typ, el *ExpressionList) {
 		d := newConstDeclaration(l.ident(), lx.lookahead.Pos())
 		lx.scope.declare(lx, d)
 	}
+}
+
+// ----------------------------------------------------------------- Expression
+
+func (n *Expression) ident() (t xc.Token) {
+	if n.Case != 0 { // UnaryExpression
+		return t
+	}
+
+	u := n.UnaryExpression
+	if u.Case != 7 { // PrimaryExpression
+		return t
+	}
+
+	p := u.PrimaryExpression
+	if p.Case != 0 { // Operand
+		return t
+	}
+
+	o := p.Operand
+	if o.Case != 4 || o.GenericArgumentsOpt != nil { // IDENTIFIER GenericArgumentsOpt
+		return t
+	}
+
+	return o.Token
 }
 
 // ------------------------------------------------------------- IdentifierList
@@ -222,6 +257,60 @@ func (n *Prologue) post(lx *lexer) {
 		}
 
 		lx.fileScope.declare(lx, v)
+	}
+}
+
+// ---------------------------------------------------------------------- Range
+
+func (n *Range) post1(lx *lexer) {
+	if n.Case != 1 { // ExpressionList ":=" "range" Expression
+		panic("internal error")
+	}
+
+	cnt := 0
+	l := n.ExpressionList
+	for ; l != nil && cnt < 2; l = l.ExpressionList {
+		t := l.Expression.ident()
+		if t.IsValid() {
+			ex := lx.scope.Bindings[t.Val]
+			switch {
+			case ex != nil:
+				lx.err(ex, "%s repeated on left side of :=", t.S())
+			default:
+				lx.scope.declare(lx, newVarDeclaration(t, lx.lookahead.Pos()))
+			}
+		}
+		cnt++
+	}
+	if l != nil {
+		lx.err(l.Expression, "too many variables declared by the range clause")
+	}
+}
+
+// ----------------------------------------------------------------- SwitchCase
+
+func (n *SwitchCase) post2(lx *lexer) {
+	if n.Case != 2 { // "case" ArgumentList ":=" Expression ':'
+		panic("internal error")
+	}
+
+	cnt := 0
+	l := n.ArgumentList
+	for ; l != nil && cnt < 2; l = l.ArgumentList {
+		t := l.Argument.ident()
+		if t.IsValid() {
+			ex := lx.scope.Bindings[t.Val]
+			switch {
+			case ex != nil:
+				lx.err(ex, "%s repeated on left side of :=", t.S())
+			default:
+				lx.scope.declare(lx, newVarDeclaration(t, lx.lookahead.Pos()))
+			}
+		}
+		cnt++
+	}
+	if l != nil {
+		lx.err(l.Argument, "too many variables declared by the case clause")
 	}
 }
 

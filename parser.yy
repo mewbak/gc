@@ -623,6 +623,9 @@ Prologue:
 Range:
 	ExpressionList '=' "range" Expression
 |       ExpressionList ":=" "range" Expression
+	{
+		lhs.post1(lx)
+	}
 |       "range" Expression
 
 ReceiverOpt:
@@ -734,6 +737,9 @@ SwitchCase:
 	"case" ArgumentList ':'
 |       "case" ArgumentList '=' Expression ':'
 |       "case" ArgumentList ":=" Expression ':'
+	{
+		lhs.post2(lx)
+	}
 |       "default" ':'	
 |	"case" error
 |	"default" error
