@@ -655,6 +655,9 @@ SimpleStatement:
 |       Expression "--"
 |       Expression "++"
 |       ExpressionList ":=" ExpressionList
+	{
+		lhs.shortVarDecl(lx)
+	}
 
 SimpleStatementOpt:
 	/* empty */

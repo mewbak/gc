@@ -270,6 +270,7 @@ func (n *Range) shortVarDecl(lx *lexer) {
 	cnt := 0
 	l := n.ExpressionList
 	for ; l != nil && cnt < 2; l = l.ExpressionList {
+		cnt++
 		t := l.Expression.ident()
 		if t.IsValid() {
 			ex := lx.scope.Bindings[t.Val]
@@ -279,11 +280,21 @@ func (n *Range) shortVarDecl(lx *lexer) {
 			default:
 				lx.scope.declare(lx, newVarDeclaration(t, lx.lookahead.Pos()))
 			}
+			continue
 		}
-		cnt++
+
+		lx.err(l.Expression, "expected identifier")
 	}
 	if l != nil {
 		lx.err(l.Expression, "too many variables declared by the range clause")
+	}
+}
+
+// ------------------------------------------------------------ SimpleStatement
+
+func (n *SimpleStatement) shortVarDecl(lx *lexer) {
+	if n.Case != 4 { // ExpressionList ":=" ExpressionList
+		panic("internal error")
 	}
 }
 
@@ -297,6 +308,7 @@ func (n *SwitchCase) shortVarDecl(lx *lexer) {
 	cnt := 0
 	l := n.ArgumentList
 	for ; l != nil && cnt < 2; l = l.ArgumentList {
+		cnt++
 		t := l.Argument.ident()
 		if t.IsValid() {
 			ex := lx.scope.Bindings[t.Val]
@@ -306,8 +318,10 @@ func (n *SwitchCase) shortVarDecl(lx *lexer) {
 			default:
 				lx.scope.declare(lx, newVarDeclaration(t, lx.lookahead.Pos()))
 			}
+			continue
 		}
-		cnt++
+
+		lx.err(l.Argument, "expected identifier")
 	}
 	if l != nil {
 		lx.err(l.Argument, "too many variables declared by the case clause")
